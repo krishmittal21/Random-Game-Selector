@@ -1,7 +1,7 @@
 import random
 import tkinter as tk
 import requests
-import random
+
 games = ['completelyrics', 'tictactoe', 'quiz']
 
 def run_random_game():
