@@ -2,17 +2,23 @@ import random
 import tkinter as tk
 import requests
 
-games = ['tictactoe', 'quiz']
 
+def main():
+    root = tk.Tk()
+    root.title("Random Game Selector")
+    root.geometry("200x100")
 
+    button = tk.Button(root, text="Run Random Game", command=run_game)
+    button.pack(pady=20)
+
+    root.mainloop()
 def run_random_game():
+    games = ['tictactoe', 'quiz']
     game = random.choice(games)
     if game == 'tictactoe':
         play_tictactoe_game()
     elif game == 'quiz':
         play_quiz_game()
-
-
 def play_tictactoe_game():
     board = {
         'T1': ' ', 'T2': ' ', 'T3': ' ',
@@ -73,8 +79,6 @@ def play_tictactoe_game():
     result_label.grid(row=row, columnspan=3)
 
     root.mainloop()
-
-
 def play_quiz_game():
     API_BASE_URL = "https://opentdb.com/api.php"
     API_AMOUNT = 5  # Number of questions to retrieve
@@ -160,17 +164,9 @@ def play_quiz_game():
         root.mainloop()
     else:
         print("Failed to retrieve quiz questions. Please try again.")
-
-
 def run_game():
     run_random_game()
+if __name__ == "__main__":
+    main()
 
 
-root = tk.Tk()
-root.title("Random Game Selector")
-root.geometry("200x100")
-
-button = tk.Button(root, text="Run Random Game", command=run_game)
-button.pack(pady=20)
-
-root.mainloop()
