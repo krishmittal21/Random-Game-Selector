@@ -1,16 +1,17 @@
 import random
 import tkinter as tk
-
+import requests
+import random
 games = ['completelyrics', 'tictactoe', 'quiz']
 
 def run_random_game():
     game = random.choice(games)
-    if game == 'completeelyricsfinal':
-        import completeelyricsfinal
+    if game == 'completelyrics':
+        completelyrics()
     elif game == 'tictactoe':
-        import tictactoe
-    elif game == 'quizzz':
-        import quizzz
+        tictactoe()
+    elif game == 'quiz':
+        quiz()
 
 def main():
     root = tk.Tk()
@@ -116,5 +117,90 @@ def tictactoe():
         total_moves += 1
         print('***************************')
         print()
+def quiz():
+    API_BASE_URL = "https://opentdb.com/api.php"
+    API_AMOUNT = 5  # Number of questions to retrieve
+    API_CATEGORY = 9  # Category ID for General Knowledge
+    API_DIFFICULTY = "medium"
+
+    def get_quiz_questions():
+        params = {
+            "amount": API_AMOUNT,
+            "category": API_CATEGORY,
+            "difficulty": API_DIFFICULTY,
+            "type": "multiple",
+        }
+
+        response = requests.get(API_BASE_URL, params=params)
+        if response.status_code == 200:
+            data = response.json()
+            results = data.get("results", [])
+            return results
+        else:
+            print("Failed to retrieve quiz questions. Please try again.")
+
+    def play_quiz_game():
+        questions = get_quiz_questions()
+        if questions:
+            for question in questions:
+                print(question["question"])
+                options = random.sample(question["incorrect_answers"], 2)
+                options.append(question["correct_answer"])
+                random.shuffle(options)
+
+                for i, option in enumerate(options):
+                    print(f"{i + 1}. {option}")
+
+                answer = input("Your answer (1-3): ")
+                if answer == str(options.index(question["correct_answer"]) + 1):
+                    print("Correct!")
+                else:
+                    print("Incorrect!")
+                print()
+
+    def main():
+        print("Welcome to the Quiz Game!")
+        play_quiz_game()
+
+    if __name__ == "__main__":
+        main()
+def completelyrics():
+    API_BASE_URL = "https://api.lyrics.ovh/v1"
+    def get_song_lyrics(artist, title):
+        endpoint = f"{API_BASE_URL}/{artist}/{title}"
+        response = requests.get(endpoint)
+        if response.status_code == 200:
+            data = response.json()
+            lyrics = data.get("lyrics", "")
+            return lyrics
+        else:
+            print("Failed to retrieve song lyrics. Please try again.")
+
+        def play_complete_lyrics_game():
+            artist = input("Enter the artist name: ")
+            title = input("Enter the song title: ")
+
+            lyrics = get_song_lyrics(artist, title)
+            if lyrics:
+                print("Complete the lyrics:")
+                print(lyrics)
+                completion = input("Your answer: ")
+
+                # Compare the completion with the actual lyrics
+                if completion.lower() in lyrics.lower():
+                    print("Correct!")
+                else:
+                    print("Incorrect!")
+            else:
+                print("No lyrics found for the specified artist and song.")
+
+        def main():
+            print("Welcome to the Complete the Lyrics Game!")
+            play_complete_lyrics_game()
+
+        if __name__ == "__main__":
+            main()
+
+
 if __name__ == "__main__":
     main()
