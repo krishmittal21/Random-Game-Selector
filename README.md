@@ -1,5 +1,5 @@
 # Random Game Selector
-# Harvard CS50 Projecy
+# Harvard CS50 Project
 This is a Python script that allows you to play random games. It includes two games: Tic-Tac-Toe and a Quiz game. The script utilizes the tkinter library for creating a graphical user interface and the requests library for making API calls to retrieve quiz questions.
 
 ## Installation
